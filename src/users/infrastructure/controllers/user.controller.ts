@@ -57,7 +57,7 @@ export class UserController {
         const isExist: boolean = !!await this.service.findOneUser(null, body.email);
 
         if (req && req['user'] && req['user']['role'] === Roles.CUSTOMER) throw new HttpException('Cannot register when logged in', HttpStatus.FORBIDDEN);
-        if (req && !req['user'] && body.role === Roles.ADMIN) throw new HttpException('Not enough permissions', HttpStatus.FORBIDDEN);
+        if (req && !req['user'] && body.role && body.role === Roles.ADMIN) throw new HttpException('Not enough permissions', HttpStatus.FORBIDDEN);
         if (isExist) throw new HttpException('This user already exists', HttpStatus.FORBIDDEN);
 
         const user: UserEntity = await this.service.createUser(body);
